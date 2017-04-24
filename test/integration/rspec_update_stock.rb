@@ -25,6 +25,7 @@ describe "Update Stock feature" do
    context "adding to stock of existing book on stock" do
       before(:each) do
           @book1_update = Book.new("1111", "","", 0, "", 5)
+          @book3_update = Book.new("3333", "","", 0, "", 5)
       end
       context "when it is not in the remote cache" do
          it "should leave the remote cache unchanged" do
@@ -42,11 +43,10 @@ describe "Update Stock feature" do
          it "should update the remote cache" do
              # ..... to be completed ......
 
-             
 
-             result = @data_access.updateStock(@book1_update)
+             result = @data_access.updateStock(@book3_update)
              result = @sqlp.isbnSearch 3333
-             expect(result.quanitity).to eql 16
+             expect(result.quantity).to eql 16
          end
       end          
    end
