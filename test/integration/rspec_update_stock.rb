@@ -46,7 +46,7 @@ describe "Update Stock feature" do
 
              result = @data_access.updateStock(@book3_update)
              result = @sqlp.isbnSearch 3333
-             expect(result.quantity).to eql 16
+             expect(result.quantity).to eql 5
          end
       end          
    end
