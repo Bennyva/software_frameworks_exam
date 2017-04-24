@@ -35,13 +35,14 @@ describe "Update Stock feature" do
       end
 
       context "when it is in the remote cache" do
-         it "should update the remote cache" do
-             # ..... to be completed ......
-
-             before(:each) do
+        before(:each) do
                  @memcache_client.set "v_3333", 1
                  @memcache_client.set "3333_1", @book3.to_cache
              end
+         it "should update the remote cache" do
+             # ..... to be completed ......
+
+             
 
              result = @data_access.updateStock(@book1_update)
              result = @sqlp.isbnSearch 3333
