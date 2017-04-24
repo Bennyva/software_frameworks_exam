@@ -10,6 +10,8 @@ describe "Update Stock feature" do
       @data_access = DataAccess.new(@sqlp, @memcache_client)
       @book1 = Book.new("1111", "title1","author1", 11.1, "genre1", 11)
       @book2 = Book.new("2222", "title2","author2", 22.2, "genre2", 22)
+      @book3 = Book.new("3333", "title3","author3", 33.3, "genre3", 33)
+
       @data_access.startUp 
    end  
    context "book is new" do
@@ -33,8 +35,17 @@ describe "Update Stock feature" do
       end
 
       context "when it is in the remote cache" do
-         it "should update the remote cache unchanged" do
+         it "should update the remote cache" do
              # ..... to be completed ......
+
+             before(:each) do
+                 @memcache_client.set "v_3333", 1
+                 @memcache_client.set "3333_1", @book3.to_cache
+             end
+
+             result = @data_access.updateStock(@book1_update)
+             result = @sqlp.isbnSearch 3333
+             expect(result.quanitity).to eql 16
          end
       end          
    end

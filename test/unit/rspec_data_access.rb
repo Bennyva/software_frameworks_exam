@@ -75,8 +75,7 @@ describe DataAccess do
         context "related book is in the remote cache" do
           it "should update in the remote cache and database" do
             expect(@sqlite_database).to receive(:updateBook).with(@book1)
-            expect(@dalli_client).to receive(:get).with("v_#{@book1.isbn}" ).
-                   and_return(2)
+            expect(@dalli_client).to receive(:get).with("v_#{@book1.isbn}" ).and_return(2)
             expect(@dalli_client).to receive(:set).with("v_#{@book1.isbn}",3)
             expect(@dalli_client).to receive(:set).with("#{@book1.isbn}_3",@book1.to_cache )                 
             @data_access.updateBook(@book1)   
@@ -121,27 +120,27 @@ describe DataAccess do
        end 
          # ..... to be completed .......
         context "book is exisiting in the database, decide if its in remote"
-         context "book is exisiting and not in memcache" do
-          it "should add to the database," do
-              expect(@sqlite_database).to receive(:updateStock).with(@book1).and_return(1)
+           context "book is exisiting and not in memcache" do
+            it "should add to the database," do
+                expect(@sqlite_database).to receive(:updateStock).with(@book1).and_return(1)
 
-              expect(@dalli_client).to receive(:get).with("v_#{@book1.isbn}" ).and_return(2)
-              expect(@dalli_client).to receive(:set).with("v_#{@book1.isbn}",3)
-              expect(@dalli_client).to receive(:set).with("#{@book1.isbn}_3",@book1.to_cache )
-              @data_access.updateStock(@book1)   
-
-
-
-          end
-        end
-        context "book is exisiting and in memcache" do
-          it "should add to the database but also update the memcache" do
-            before(:each) do
-              expect(@sqlite_database).to receive(:updateStock).with(@book1).and_return(1)
-              expect(@dalli_client).to receive(:get).with('v_1111').and_return(2)
-              expect(@dalli_client).to receive(:get).with('1111_2').and_return  @book1.to_cache
-              result = @data_access.updateStock(@book1) 
+                expect(@dalli_client).to receive(:get).with("v_#{@book1.isbn}" ).and_return(2)
+                expect(@dalli_client).to receive(:set).with("v_#{@book1.isbn}",3)
+                expect(@dalli_client).to receive(:set).with("#{@book1.isbn}_3",@book1.to_cache )
+                @data_access.updateStock(@book1)   
             end
+          end
+          context "book is exisiting and in memcache" do
+              before(:each) do
+                expect(@sqlite_database).to receive(:updateStock).with(@book1).and_return(1)
+
+                expect(@dalli_client).to receive(:get).with("v_#{@book1.isbn}" ).and_return(2)
+                expect(@dalli_client).to receive(:get).with("#{@book1.isbn}_2}" ).and_return  @book1.to_cache
+                expect(@dalli_client).to receive(:set).with("v_#{@book1.isbn}",3)
+                expect(@dalli_client).to receive(:set).with("#{@book1.isbn}_3",@book1.to_cache )                 
+                  
+                @data_access.updateStock(@book1) 
+              end
           end
         end
     end  
